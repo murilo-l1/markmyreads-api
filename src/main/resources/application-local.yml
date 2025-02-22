@@ -1,0 +1,35 @@
+spring:
+  main:
+    banner-mode: log
+
+  output:
+    ansi:
+      enabled: detect
+
+  datasource:
+    url: jdbc:postgresql://localhost:15435/mmrdb
+    username: mmruser
+    password: mmrpass
+
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      dialect: org.hibernate.spatial.dialect.postgis.PostgisDialect
+      ddl-auto: validate
+      physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.CamelCaseToUnderscoresNamingStrategy
+      implicit_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+
+logging:
+  level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: trace
+      springframework:
+        web: debug
+    sql: trace
+
+cors:
+  origins: http://localhost:4200,http://127.0.0.1:4200

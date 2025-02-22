@@ -1,0 +1,26 @@
+services:
+  database:
+    container_name: markmyreads-local-database
+    image: postgres:13-alpine
+    env_file:
+      - ./.env.local
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - markmyreads-local-database-volume:/markmyreads/data
+    restart: unless-stopped
+    ports:
+      - "15435:5432"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1M"
+        max-file: "10"
+
+volumes:
+  markmyreads-local-database-volume:
+    driver: local
+
+networks:
+  kindian-local-internals-network:
+    name: kindian-local-internals-network
+    driver: bridge

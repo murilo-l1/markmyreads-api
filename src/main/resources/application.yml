@@ -1,0 +1,51 @@
+server:
+  port: 8080
+  compression:
+    enabled: true
+  error:
+    include-stacktrace: never
+    include-message: always
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+  profiles:
+    active: local
+
+  output:
+    ansi:
+      enabled: always
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: non_null
+    serialization:
+      indent-output: true
+      write-date-keys-as-timestamps: true
+      write-dates-as-timestamps: false
+      write-date-timestamps-as-nanoseconds: false
+    deserialization:
+      read-date-timestamps-as-nanoseconds: false
+
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+
+springdoc:
+  version: '@springdoc.version@'
+  api-docs:
+    version: OPENAPI_3_1
+  swagger-ui:
+    defaultModelsExpandDepth: -1
+    defaultModelExpandDepth: 2
+    supportedSubmitMethods: []
+  cache:
+    disabled: true
+  remove-broken-reference-definitions: false
