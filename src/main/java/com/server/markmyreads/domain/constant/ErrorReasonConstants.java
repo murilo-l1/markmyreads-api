@@ -10,4 +10,6 @@ public final class ErrorReasonConstants {
 
     public static final String INVALID_FILE_FORMAT = "File dont follow MyClippings structure";
 
+    public static final String EXTRACTION_ERROR = "Unable to extract information from file body";
+
 }

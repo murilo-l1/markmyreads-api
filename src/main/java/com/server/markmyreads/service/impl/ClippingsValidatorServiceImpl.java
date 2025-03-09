@@ -1,5 +1,6 @@
 package com.server.markmyreads.service.impl;
 
+import com.server.markmyreads.domain.constant.ClippingsConstants;
 import com.server.markmyreads.handler.exception.EmptyFileException;
 import com.server.markmyreads.handler.exception.FileAbsentException;
 import com.server.markmyreads.handler.exception.InvalidFileExtensionException;
@@ -40,7 +41,7 @@ public class ClippingsValidatorServiceImpl implements ClippingsValidatorService 
     }
 
     private boolean isTxt(@NotBlank final String fileName) {
-        return StringUtils.isNotBlank(fileName) && FilenameUtils.getExtension(fileName).equalsIgnoreCase("txt");
+        return FilenameUtils.getExtension(fileName).equalsIgnoreCase("txt");
     }
 
     private boolean isMyClippings(@NonNull final MultipartFile file) {
@@ -50,7 +51,7 @@ public class ClippingsValidatorServiceImpl implements ClippingsValidatorService 
             boolean isReadingBlock = false;
 
             while ((line = br.readLine()) != null) {
-                if (line.trim().equals("==========")) {
+                if (line.trim().equals(ClippingsConstants.BLOCK_DELIMITER)) {
                     if (isReadingBlock) {
                         return true;
                     }
