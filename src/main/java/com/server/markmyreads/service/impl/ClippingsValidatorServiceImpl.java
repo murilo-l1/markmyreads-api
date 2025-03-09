@@ -6,6 +6,7 @@ import com.server.markmyreads.handler.exception.InvalidFileExtensionException;
 import com.server.markmyreads.handler.exception.InvalidFileFormatException;
 import com.server.markmyreads.service.ClippingsValidatorService;
 import jakarta.validation.constraints.NotBlank;
+import lombok.NonNull;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class ClippingsValidatorServiceImpl implements ClippingsValidatorService 
         return StringUtils.isNotBlank(fileName) && FilenameUtils.getExtension(fileName).equalsIgnoreCase("txt");
     }
 
-    private boolean isMyClippings(final MultipartFile file) {
+    private boolean isMyClippings(@NonNull final MultipartFile file) {
 
         try (final BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             String line;
@@ -54,7 +55,7 @@ public class ClippingsValidatorServiceImpl implements ClippingsValidatorService 
                         return true;
                     }
                     isReadingBlock = true;
-                } else if (!line.trim().isEmpty()) {
+                } else if (StringUtils.isNotBlank(line)) {
                     isReadingBlock = true;
                 }
             }
@@ -62,7 +63,6 @@ public class ClippingsValidatorServiceImpl implements ClippingsValidatorService 
         catch (Exception e) {
             throw new InvalidFileFormatException();
         }
-
         return false;
     }
 
