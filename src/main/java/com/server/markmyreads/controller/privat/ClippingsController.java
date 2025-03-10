@@ -7,8 +7,6 @@ import com.server.markmyreads.service.KindleNoteProviderService;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +27,7 @@ public class ClippingsController {
 
         validatorService.validate(file);
 
-        final List<KindleNote> notes = providerService.proccessAllNotesBySort(file, NotesSortCriteriaEnum.BY_DATE_DESC);
+        final List<KindleNote> notes = providerService.processAllNotesBySort(n, NotesSortCriteriaEnum.BY_DATE_DESC);
 
         return ResponseEntity.ok(notes.getFirst().toString());
     }

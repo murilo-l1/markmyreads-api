@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@ToString
 public class KindleNote {
 
     private final String title;
@@ -75,4 +74,16 @@ public class KindleNote {
         this.notes.clear();
         this.notes.addAll(filteredNotes);
     }
+
+    @Override
+    public String toString() {
+        return "KindleNote{" +
+                "title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", notes=" + notes +
+                ", lastReadAt=" + lastReadAt +
+                ", notesCount=" + this.notesCount() +
+                '}';
+    }
+
 }

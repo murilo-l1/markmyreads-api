@@ -1,8 +1,8 @@
 package com.server.markmyreads.service.impl;
 
 import com.server.markmyreads.domain.constant.ClippingsConstants;
+import com.server.markmyreads.domain.dto.ClippingsContext;
 import com.server.markmyreads.handler.exception.ClippingsExtractionErrorException;
-import com.server.markmyreads.handler.exception.InvalidFileFormatException;
 import com.server.markmyreads.service.ClippingsExtractorService;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -19,7 +18,7 @@ import java.util.Set;
 public class ClippingsExtractorServiceImpl implements ClippingsExtractorService {
 
     @Override
-    public List<String> extractClippingsBlocks(@NonNull final MultipartFile file) {
+    public ClippingsContext extractClippingsBlocks(@NonNull final MultipartFile file) {
 
         try (final BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
 
@@ -48,7 +47,8 @@ public class ClippingsExtractorServiceImpl implements ClippingsExtractorService 
             }
 
             br.close();
-            return blocksSet.stream().toList();
+
+            return new ClippingsContext(blocksSet.stream().toList());
         }
         catch (Exception e) {
             throw new ClippingsExtractionErrorException();
