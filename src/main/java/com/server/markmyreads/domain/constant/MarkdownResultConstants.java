@@ -4,9 +4,12 @@ public final class MarkdownResultConstants {
 
     private MarkdownResultConstants(){}
 
-    private static final String HEADER_TAG = "## ";
-    private static final String BULLET_POINT_TAG = "- ";
-    private static final String DOUBLE_LINE_BREAK = "\n\n";
-    private static final String NOTE_DELIMITER = "---\n\n";
+    public static final String RESULT_FILE_NAME = "MarkMyReads";
+
+    public static final String HEADER_TAG = "## ";
+    public static final String BULLET_POINT_TAG = "- ";
+    public static final String DOUBLE_LINE_BREAK = "\n\n";
+    public static final String NOTE_DELIMITER = "---\n\n";
+
 
 }

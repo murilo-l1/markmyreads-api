@@ -1,9 +1,13 @@
 package com.server.markmyreads.controller.privat;
 
+import com.server.markmyreads.domain.dto.ClippingsContext;
 import com.server.markmyreads.domain.enumeration.NotesSortCriteriaEnum;
 import com.server.markmyreads.domain.model.KindleNote;
+import com.server.markmyreads.domain.model.MarkMyReadsFile;
+import com.server.markmyreads.service.ClippingsExtractorService;
 import com.server.markmyreads.service.ClippingsValidatorService;
 import com.server.markmyreads.service.KindleNoteProviderService;
+import com.server.markmyreads.service.MarkdownFormatterService;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +24,22 @@ import java.util.List;
 public class ClippingsController {
 
     private final ClippingsValidatorService validatorService;
+    private final ClippingsExtractorService extractorService;
     private final KindleNoteProviderService providerService;
+    private final MarkdownFormatterService formatterService;
 
     @PostMapping("/export")
     public ResponseEntity<String> convert(@NonNull @NotNull @RequestParam("file") final MultipartFile file) {
 
         validatorService.validate(file);
 
-        final List<KindleNote> notes = providerService.processAllNotesBySort(n, NotesSortCriteriaEnum.BY_DATE_DESC);
+        final ClippingsContext context = extractorService.extractClippingsBlocks(file);
 
-        return ResponseEntity.ok(notes.getFirst().toString());
+        final List<KindleNote> notes = providerService.processAllNotesBySort(context, NotesSortCriteriaEnum.BY_DATE_DESC);
+
+        final MarkMyReadsFile result = formatterService.formatToSingleMarkdown(notes);
+
+        return ResponseEntity.ok(result.toString());
     }
 
 }
