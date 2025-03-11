@@ -9,7 +9,7 @@ services:
       - markmyreads-local-database-volume:/markmyreads/data
     restart: unless-stopped
     ports:
-      - "15435:5432"
+      - "15432:5432"
     logging:
       driver: "json-file"
       options:
@@ -22,5 +22,5 @@ volumes:
 
 networks:
   kindian-local-internals-network:
-    name: kindian-local-internals-network
+    name: markmyreads-local-internals-network
     driver: bridge

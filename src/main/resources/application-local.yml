@@ -7,7 +7,7 @@ spring:
       enabled: detect
 
   datasource:
-    url: jdbc:postgresql://localhost:15435/mmrdb
+    url: jdbc:postgresql://localhost:15432/mmrdb
     username: mmruser
     password: mmrpass
 
