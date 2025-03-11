@@ -1,7 +1,7 @@
 package com.server.markmyreads.usecase.markdown.impl;
 
 import com.server.markmyreads.domain.dto.ClippingsContext;
-import com.server.markmyreads.domain.enumeration.NotesSortCriteriaEnum;
+import com.server.markmyreads.domain.enumeration.NoteSortType;
 import com.server.markmyreads.domain.model.KindleNote;
 import com.server.markmyreads.domain.model.MarkMyReadsFile;
 import com.server.markmyreads.service.ClippingsExtractorService;
@@ -29,7 +29,7 @@ public class MarkdownExportImpl implements MarkdownExport {
     private final MarkdownFormatterService formatterService;
 
     @Override
-    public ResponseEntity<byte[]> convertToSingleMarkdown(@NonNull final MultipartFile file, final NotesSortCriteriaEnum sortCriteria) {
+    public ResponseEntity<byte[]> convertToSingleMarkdown(@NonNull final MultipartFile file, final NoteSortType sortCriteria) {
 
         final ClippingsContext context = extractorService.extractClippingsBlocks(file);
         final List<KindleNote> notes = providerService.processAllNotesBySort(context, sortCriteria);

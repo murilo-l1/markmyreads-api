@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum NotesSortCriteriaEnum {
+public enum NoteSortType {
 
-    BY_TITLE("BY_TITLE"),
-    BY_AUTHOR("BY_AUTHOR"),
-    BY_NOTES_COUNT("BY_NOTES_COUNT"),
-    BY_DATE_DESC("BY_DATE_DESC");
+    TITLE("TITLE"),
+    AUTHOR("AUTHOR"),
+    NOTES_COUNT("NOTES_COUNT"),
+    DATE_DESC("DATE_DESC");
 
     private final String criteria;
 

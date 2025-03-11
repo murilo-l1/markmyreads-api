@@ -2,11 +2,11 @@ package com.server.markmyreads.service.impl;
 
 import com.server.markmyreads.domain.constant.ClippingsConstants;
 import com.server.markmyreads.domain.dto.ClippingsContext;
-import com.server.markmyreads.domain.enumeration.NotesSortCriteriaEnum;
+import com.server.markmyreads.domain.enumeration.NoteSortType;
 import com.server.markmyreads.domain.model.KindleNote;
 import com.server.markmyreads.service.KindleNoteProviderService;
 import com.server.markmyreads.util.DateParserUtil;
-import lombok.RequiredArgsConstructor;
+import io.micrometer.common.lang.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class KindleNoteProviderServiceImpl implements KindleNoteProviderService 
     private static final Pattern AUTHOR_PATTERN = Pattern.compile("\\(([^)]+)\\)");
 
     @Override
-    public List<KindleNote> processAllNotesBySort(final ClippingsContext context, final NotesSortCriteriaEnum criteria) {
+    public List<KindleNote> processAllNotesBySort(@NonNull final ClippingsContext context, @NonNull final NoteSortType type) {
 
         final List<String> blocks = context.blocks();
 
@@ -58,24 +58,20 @@ public class KindleNoteProviderServiceImpl implements KindleNoteProviderService 
 
         final List<KindleNote> notes = cleanUpNotes(noteMap.values());
 
-        return applySort(notes, criteria);
+        return applySort(notes, type);
     }
 
-    private List<KindleNote> applySort(final List<KindleNote> notes, final NotesSortCriteriaEnum criteria) {
+    private List<KindleNote> applySort(final List<KindleNote> notes, final NoteSortType type) {
 
-        if (criteria == null) {
-            return notes;
-        }
+        switch (type) {
 
-        switch (criteria) {
+            case DATE_DESC -> notes.sort(Comparator.comparing(KindleNote::getLastReadAt, Comparator.nullsLast(Comparator.reverseOrder())));
 
-            case BY_DATE_DESC -> notes.sort(Comparator.comparing(KindleNote::getLastReadAt, Comparator.nullsLast(Comparator.reverseOrder())));
+            case NOTES_COUNT -> notes.sort(Comparator.comparing(KindleNote::notesCount).reversed());
 
-            case BY_NOTES_COUNT -> notes.sort(Comparator.comparing(KindleNote::notesCount).reversed());
+            case TITLE ->  notes.sort(Comparator.comparing(KindleNote::getTitle));
 
-            case BY_TITLE ->  notes.sort(Comparator.comparing(KindleNote::getTitle));
-
-            case BY_AUTHOR -> notes.sort(Comparator.comparing(KindleNote::getAuthor));
+            case AUTHOR -> notes.sort(Comparator.comparing(KindleNote::getAuthor));
         }
 
         return notes;

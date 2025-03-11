@@ -1,16 +1,15 @@
 package com.server.markmyreads.service;
 
 import com.server.markmyreads.domain.dto.ClippingsContext;
-import com.server.markmyreads.domain.enumeration.NotesSortCriteriaEnum;
+import com.server.markmyreads.domain.enumeration.NoteSortType;
 import com.server.markmyreads.domain.model.KindleNote;
+import io.micrometer.common.lang.NonNull;
 import jakarta.validation.constraints.NotNull;
-import lombok.NonNull;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface KindleNoteProviderService {
 
-    List<KindleNote> processAllNotesBySort(final ClippingsContext context, final NotesSortCriteriaEnum criteria);
+    List<KindleNote> processAllNotesBySort(@NonNull @NotNull final ClippingsContext context, @NonNull @NotNull final NoteSortType type);
 
 }

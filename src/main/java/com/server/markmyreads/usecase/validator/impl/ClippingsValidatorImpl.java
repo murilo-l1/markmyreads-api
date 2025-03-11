@@ -1,11 +1,11 @@
-package com.server.markmyreads.service.impl;
+package com.server.markmyreads.usecase.validator.impl;
 
 import com.server.markmyreads.domain.constant.ClippingsConstants;
 import com.server.markmyreads.handler.exception.EmptyFileException;
 import com.server.markmyreads.handler.exception.FileAbsentException;
 import com.server.markmyreads.handler.exception.InvalidFileExtensionException;
 import com.server.markmyreads.handler.exception.InvalidFileFormatException;
-import com.server.markmyreads.service.ClippingsValidatorService;
+import com.server.markmyreads.usecase.validator.ClippingsValidator;
 import jakarta.validation.constraints.NotBlank;
 import lombok.NonNull;
 import org.apache.commons.io.FilenameUtils;
@@ -16,8 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-@Service("ClippingsValidatorService")
-public class ClippingsValidatorServiceImpl implements ClippingsValidatorService {
+@Service("ClippingsValidator")
+public class ClippingsValidatorImpl implements ClippingsValidator {
 
     @Override
     public void validate(final MultipartFile file) {
