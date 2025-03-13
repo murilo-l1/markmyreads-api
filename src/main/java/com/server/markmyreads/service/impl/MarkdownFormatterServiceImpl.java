@@ -4,12 +4,14 @@ import com.server.markmyreads.domain.constant.MarkdownResultConstants;
 import com.server.markmyreads.domain.model.KindleNote;
 import com.server.markmyreads.domain.model.MarkMyReadsFile;
 import com.server.markmyreads.service.MarkdownFormatterService;
+import com.server.markmyreads.util.DateParserUtil;
 import com.server.markmyreads.util.StringSanitizerUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 import static com.server.markmyreads.domain.constant.MarkdownResultConstants.DOUBLE_LINE_BREAK;
 
@@ -42,11 +44,12 @@ public class MarkdownFormatterServiceImpl implements MarkdownFormatterService {
     private String formatSingleNoteContent(final KindleNote note) {
         final StringBuilder content = new StringBuilder();
 
-        log.info("came here with lastReadAt as: {}", note.getLastReadAt());
-
         if (note.getLastReadAt() != null) {
-            content.append("Last read at: ")
-                    .append(note.getLastReadAt().date())
+            final Locale locale = note.getLastReadAt().locale();
+            final String label = Locale.ENGLISH.equals(locale) ? "Last read at: " : "Último acesso em: ";
+
+            content.append(label)
+                    .append("*").append(DateParserUtil.toExtendedDateForm(note.getLastReadAt())).append("*")
                     .append(DOUBLE_LINE_BREAK);
         }
 

@@ -45,10 +45,8 @@ public final class DateParserUtil {
         }
     }
 
-    public static String formatNoteDate(final NoteDateContext dateContext) {
-
-
-        return null;
+    public static String toExtendedDateForm(final NoteDateContext dateContext) {
+        return DateTimeFormatter.ofPattern("d MMM yyyy", dateContext.locale()).format(dateContext.date());
     }
 
 }
