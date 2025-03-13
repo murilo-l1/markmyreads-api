@@ -17,14 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping(value = "/api/clippings", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ClippingsController {
 
-    private final ClippingsValidator validatorService;
+    private final ClippingsValidator validator;
     private final MarkdownExport export;
 
     @PostMapping("/export")
     public ResponseEntity<byte[]> convert(@NonNull @NotNull @RequestParam("file") final MultipartFile file,
                                           @RequestParam(value = "sort", required = false, defaultValue = "DATE_DESC") final NoteSortType sort) {
 
-        validatorService.validate(file);
+        validator.validate(file);
 
         return export.convertToSingleMarkdown(file, sort);
     }

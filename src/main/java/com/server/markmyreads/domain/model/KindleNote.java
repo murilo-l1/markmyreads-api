@@ -1,5 +1,6 @@
 package com.server.markmyreads.domain.model;
 
+import com.server.markmyreads.domain.dto.NoteDateContext;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NonNull;
@@ -15,9 +16,9 @@ public class KindleNote {
     private final String title;
     private final String author;
     private final List<String> notes;
-    private LocalDate lastReadAt;
+    private NoteDateContext lastReadAt;
 
-    public KindleNote(final String title, final String author, final String note, final LocalDate lastReadAt) {
+    public KindleNote(final String title, final String author, final String note, final NoteDateContext lastReadAt) {
         this.title = title;
         this.author = author;
         this.notes = new ArrayList<>(List.of(note));
@@ -28,9 +29,9 @@ public class KindleNote {
         this.notes.add(note);
     }
 
-    public void updateLastReadAt(final LocalDate date) {
-        if (date != null && (lastReadAt == null || date.isAfter(this.lastReadAt))) {
-            this.lastReadAt = date;
+    public void updateLastReadAt(final NoteDateContext dateContext) {
+        if (dateContext != null && (lastReadAt == null || dateContext.date().isAfter(this.lastReadAt.date()))) {
+            this.lastReadAt = dateContext;
         }
     }
 

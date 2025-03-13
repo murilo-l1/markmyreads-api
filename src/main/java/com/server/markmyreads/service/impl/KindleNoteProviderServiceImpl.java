@@ -2,6 +2,7 @@ package com.server.markmyreads.service.impl;
 
 import com.server.markmyreads.domain.constant.ClippingsConstants;
 import com.server.markmyreads.domain.dto.ClippingsContext;
+import com.server.markmyreads.domain.dto.NoteDateContext;
 import com.server.markmyreads.domain.enumeration.NoteSortType;
 import com.server.markmyreads.domain.model.KindleNote;
 import com.server.markmyreads.service.KindleNoteProviderService;
@@ -40,7 +41,7 @@ public class KindleNoteProviderServiceImpl implements KindleNoteProviderService 
             final String title = extractTitleFromHeader(header);
             final String author = extractAuthorFromHeader(header);
             final String note = blockLines[ClippingsConstants.NOTE_CONTENT_INDEX];
-            final LocalDate date = DateParserUtil.parseToLocalDate(blockLines[ClippingsConstants.LAST_DATE_READ_INDEX]);
+            final NoteDateContext date = DateParserUtil.parseToLocalDate(blockLines[ClippingsConstants.LAST_DATE_READ_INDEX]);
 
             noteMap.compute(title, (key, existingNote) -> {
 
@@ -65,7 +66,7 @@ public class KindleNoteProviderServiceImpl implements KindleNoteProviderService 
 
         switch (type) {
 
-            case DATE_DESC -> notes.sort(Comparator.comparing(KindleNote::getLastReadAt, Comparator.nullsLast(Comparator.reverseOrder())));
+            case DATE_DESC -> notes.sort(Comparator.comparing(note -> note.getLastReadAt().date(), Comparator.nullsLast(Comparator.reverseOrder())));
 
             case NOTES_COUNT -> notes.sort(Comparator.comparing(KindleNote::notesCount).reversed());
 

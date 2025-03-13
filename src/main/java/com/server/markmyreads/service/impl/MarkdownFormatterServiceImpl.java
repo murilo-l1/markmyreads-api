@@ -6,13 +6,14 @@ import com.server.markmyreads.domain.model.MarkMyReadsFile;
 import com.server.markmyreads.service.MarkdownFormatterService;
 import com.server.markmyreads.util.StringSanitizerUtil;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import static com.server.markmyreads.domain.constant.MarkdownResultConstants.DOUBLE_LINE_BREAK;
 
-
+@Slf4j
 @Service("MarkdownFormatterService")
 public class MarkdownFormatterServiceImpl implements MarkdownFormatterService {
 
@@ -41,9 +42,11 @@ public class MarkdownFormatterServiceImpl implements MarkdownFormatterService {
     private String formatSingleNoteContent(final KindleNote note) {
         final StringBuilder content = new StringBuilder();
 
+        log.info("came here with lastReadAt as: {}", note.getLastReadAt());
+
         if (note.getLastReadAt() != null) {
             content.append("Last read at: ")
-                    .append(note.getLastReadAt())
+                    .append(note.getLastReadAt().date())
                     .append(DOUBLE_LINE_BREAK);
         }
 
