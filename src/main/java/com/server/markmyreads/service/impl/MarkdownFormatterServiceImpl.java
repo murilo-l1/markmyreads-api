@@ -7,15 +7,14 @@ import com.server.markmyreads.service.MarkdownFormatterService;
 import com.server.markmyreads.util.DateParserUtil;
 import com.server.markmyreads.util.StringSanitizerUtil;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import static com.server.markmyreads.domain.constant.MarkdownResultConstants.DOUBLE_LINE_BREAK;
 
-@Slf4j
 @Service("MarkdownFormatterService")
 public class MarkdownFormatterServiceImpl implements MarkdownFormatterService {
 
@@ -29,6 +28,16 @@ public class MarkdownFormatterServiceImpl implements MarkdownFormatterService {
         }
 
         return new MarkMyReadsFile(MarkdownResultConstants.RESULT_FILE_NAME, markdownContent.toString());
+    }
+
+    @Override
+    public List<MarkMyReadsFile> formatToManyMarkdowns(@NonNull final List<KindleNote> notes) {
+        return notes.stream()
+                .map(note -> new MarkMyReadsFile(
+                        StringSanitizerUtil.sanitizeFileName(note.getTitle()),
+                        formatSingleNoteContent(note)
+                ))
+                .toList();
     }
 
     private String formatSingleNote (final KindleNote note) {

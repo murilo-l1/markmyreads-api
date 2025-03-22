@@ -11,4 +11,5 @@ public interface MarkdownFormatterService {
 
     MarkMyReadsFile formatToSingleMarkdown(@NonNull @NotNull final List<KindleNote> notes);
 
+    List<MarkMyReadsFile> formatToManyMarkdowns(@NonNull @NotNull final List<KindleNote> notes);
 }
