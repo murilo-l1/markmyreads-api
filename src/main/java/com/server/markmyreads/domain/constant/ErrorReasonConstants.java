@@ -10,6 +10,9 @@ public final class ErrorReasonConstants {
 
     public static final String INVALID_FILE_FORMAT = "File dont follow MyClippings structure";
 
+    public static final String INVALID_EXPORT = "Invalid export method";
+
     public static final String EXTRACTION_ERROR = "Unable to extract information from file body";
 
+    public static final String ZIP_PROCESSING_ERROR = "Unable to proccess zip content";
 }
