@@ -20,7 +20,7 @@ public class MarkdownToHtmlServiceImpl implements MarkdownToHtmlService {
 
         final HtmlRenderer htmlRenderer = HtmlRenderer.builder().build();
 
-        return style + "<div>" + htmlRenderer.render(parser.parse(markdownContent)) + "</div>";
+        return style.getCss() + "<div>" + htmlRenderer.render(parser.parse(markdownContent)) + "</div>";
     }
 
 }

@@ -1,12 +1,12 @@
 package com.server.markmyreads.controller.privat;
 
 import com.server.markmyreads.domain.enumeration.ExportOptionEnum;
-import com.server.markmyreads.domain.payload.NoteFormatOptionsPayload;
+import com.server.markmyreads.domain.enumeration.NoteSortType;
+import com.server.markmyreads.domain.enumeration.NoteStyleEnum;
 import com.server.markmyreads.usecase.pdf.PdfExport;
 import com.server.markmyreads.usecase.validator.ClippingsValidator;
 import com.server.markmyreads.usecase.markdown.MarkdownExport;
 import com.server.markmyreads.usecase.zip.ZipExport;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -27,19 +27,20 @@ public class ClippingsController {
     private final ZipExport zipExport;
     private final PdfExport pdfExport;
 
-    @PostMapping("/export")
+    @PostMapping(value = "/export", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<byte[]> convert(@NonNull @NotNull @RequestParam("file") final MultipartFile file,
                                           @NonNull @NotNull @RequestParam("export") final ExportOptionEnum export,
-                                          @NonNull @Valid final NoteFormatOptionsPayload payload) {
+                                          @NonNull @NotNull @RequestParam(name = "sort", required = false, defaultValue = "DATE_DESC") final NoteSortType sort,
+                                          @NonNull @NotNull @RequestParam(name = "style", required = false, defaultValue = "CLASSIC") final NoteStyleEnum style) {
 
         validator.validate(file);
 
         return switch (export) {
-            case MARKDOWN -> mardownExport.convertToSingleMarkdown(file, payload.getSort());
+            case MARKDOWN -> mardownExport.convertToSingleMarkdown(file, sort);
 
-            case ZIP -> zipExport.convertToManyMarkdowns(file, payload.getSort());
+            case ZIP -> zipExport.convertToManyMarkdowns(file, sort);
 
-            case PDF -> pdfExport.convertToSinglePdf(file, null);
+            case PDF -> pdfExport.convertToSinglePdf(file, sort, style);
         };
     }
 

@@ -3,9 +3,9 @@ package com.server.markmyreads.usecase.pdf.impl;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.server.markmyreads.domain.dto.ClippingsContext;
 import com.server.markmyreads.domain.enumeration.NoteSortType;
+import com.server.markmyreads.domain.enumeration.NoteStyleEnum;
 import com.server.markmyreads.domain.model.KindleNote;
 import com.server.markmyreads.domain.model.MarkMyReadsFile;
-import com.server.markmyreads.domain.payload.NoteFormatOptionsPayload;
 import com.server.markmyreads.service.ClippingsExtractorService;
 import com.server.markmyreads.service.KindleNoteProviderService;
 import com.server.markmyreads.service.MarkdownFormatterService;
@@ -34,12 +34,14 @@ public class PdfExportImpl implements PdfExport {
     private final MarkdownFormatterService formatterService;
 
     @Override
-    public ResponseEntity<byte[]> convertToSinglePdf(@NonNull final MultipartFile file, @NonNull final NoteFormatOptionsPayload payload) {
+    public ResponseEntity<byte[]> convertToSinglePdf(@NonNull final MultipartFile file,
+                                                     @NonNull final NoteSortType sort,
+                                                     @NonNull final NoteStyleEnum style) {
         final ClippingsContext context = extractor.extractClippingsBlocks(file);
-        final List<KindleNote> notes = provider.processAllNotesBySort(context, payload.getSort());
+        final List<KindleNote> notes = provider.processAllNotesBySort(context, sort);
         final MarkMyReadsFile markMyReadsFile = formatterService.formatToSingleMarkdown(notes);
 
-        final String htmlContent = toHtmlService.convertMarkdownContentToHtml(markMyReadsFile.content(), payload.getStyle());
+        final String htmlContent = toHtmlService.convertMarkdownContentToHtml(markMyReadsFile.content(), style);
 
         final byte[] pdfBytes = transformHtmlIntoPdfBytes(htmlContent);
 
