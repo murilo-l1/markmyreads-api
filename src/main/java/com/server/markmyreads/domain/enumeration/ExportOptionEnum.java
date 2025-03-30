@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ExportOptionEnum {
 
-    MARKDWON("MARKDOWN"),
+    MARKDOWN("MARKDOWN"),
     PDF("PDF"),
     ZIP("ZIP"),;
 

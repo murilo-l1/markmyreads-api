@@ -5,6 +5,7 @@ import com.server.markmyreads.domain.dto.ClippingsContext;
 import com.server.markmyreads.domain.enumeration.NoteSortType;
 import com.server.markmyreads.domain.model.KindleNote;
 import com.server.markmyreads.domain.model.MarkMyReadsFile;
+import com.server.markmyreads.domain.payload.NoteFormatOptionsPayload;
 import com.server.markmyreads.service.ClippingsExtractorService;
 import com.server.markmyreads.service.KindleNoteProviderService;
 import com.server.markmyreads.service.MarkdownFormatterService;
@@ -33,12 +34,12 @@ public class PdfExportImpl implements PdfExport {
     private final MarkdownFormatterService formatterService;
 
     @Override
-    public ResponseEntity<byte[]> convertToSinglePdf(@NonNull final MultipartFile file, @NonNull final NoteSortType sort) {
+    public ResponseEntity<byte[]> convertToSinglePdf(@NonNull final MultipartFile file, @NonNull final NoteFormatOptionsPayload payload) {
         final ClippingsContext context = extractor.extractClippingsBlocks(file);
-        final List<KindleNote> notes = provider.processAllNotesBySort(context, sort);
+        final List<KindleNote> notes = provider.processAllNotesBySort(context, payload.getSort());
         final MarkMyReadsFile markMyReadsFile = formatterService.formatToSingleMarkdown(notes);
 
-        final String htmlContent = toHtmlService.convertMarkdownContentToHtml(markMyReadsFile.content());
+        final String htmlContent = toHtmlService.convertMarkdownContentToHtml(markMyReadsFile.content(), payload.getStyle());
 
         final byte[] pdfBytes = transformHtmlIntoPdfBytes(htmlContent);
 
