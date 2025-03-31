@@ -4,13 +4,12 @@ import com.server.markmyreads.domain.enumeration.NoteStyleEnum;
 import com.server.markmyreads.service.MarkdownToHtmlService;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
-import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service("Markdown2PdfService")
+@Service("Markdown2HtmlService")
 public class MarkdownToHtmlServiceImpl implements MarkdownToHtmlService {
 
     @Override

@@ -28,19 +28,19 @@ public class ClippingsController {
     private final PdfExport pdfExport;
 
     @PostMapping(value = "/export", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<byte[]> convert(@NonNull @NotNull @RequestParam("file") final MultipartFile file,
-                                          @NonNull @NotNull @RequestParam("export") final ExportOptionEnum export,
-                                          @NonNull @NotNull @RequestParam(name = "sort", required = false, defaultValue = "DATE_DESC") final NoteSortType sort,
-                                          @NonNull @NotNull @RequestParam(name = "style", required = false, defaultValue = "CLASSIC") final NoteStyleEnum style) {
+    public ResponseEntity<byte[]> export(@NonNull @NotNull @RequestParam("file") final MultipartFile file,
+                                         @NonNull @NotNull @RequestParam("export") final ExportOptionEnum export,
+                                         @NonNull @NotNull @RequestParam(name = "sort", required = false, defaultValue = "DATE_DESC") final NoteSortType sort,
+                                         @NonNull @NotNull @RequestParam(name = "style", required = false, defaultValue = "CLASSIC") final NoteStyleEnum style) {
 
         validator.validate(file);
 
         return switch (export) {
             case MARKDOWN -> mardownExport.convertToSingleMarkdown(file, sort);
 
-            case ZIP -> zipExport.convertToManyMarkdowns(file, sort);
-
             case PDF -> pdfExport.convertToSinglePdf(file, sort, style);
+
+            case ZIP -> zipExport.convertToManyMarkdowns(file, sort);
         };
     }
 

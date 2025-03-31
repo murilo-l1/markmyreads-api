@@ -1,17 +1,12 @@
 package com.server.markmyreads.usecase.pdf.impl;
 
-import com.itextpdf.html2pdf.HtmlConverter;
 import com.server.markmyreads.domain.dto.ClippingsContext;
 import com.server.markmyreads.domain.enumeration.NoteSortType;
 import com.server.markmyreads.domain.enumeration.NoteStyleEnum;
 import com.server.markmyreads.domain.model.KindleNote;
 import com.server.markmyreads.domain.model.MarkMyReadsFile;
-import com.server.markmyreads.service.ClippingsExtractorService;
-import com.server.markmyreads.service.KindleNoteProviderService;
-import com.server.markmyreads.service.MarkdownFormatterService;
-import com.server.markmyreads.service.MarkdownToHtmlService;
+import com.server.markmyreads.service.*;
 import com.server.markmyreads.usecase.pdf.PdfExport;
-import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ContentDisposition;
@@ -21,17 +16,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 @Service("PdfExport")
 @RequiredArgsConstructor
 public class PdfExportImpl implements PdfExport {
 
-    private final MarkdownToHtmlService toHtmlService;
     private final ClippingsExtractorService extractor;
     private final KindleNoteProviderService provider;
     private final MarkdownFormatterService formatterService;
+    private final MarkdownToHtmlService toHtmlService;
+    private final HtmlToPdfService toPdfService;
 
     @Override
     public ResponseEntity<byte[]> convertToSinglePdf(@NonNull final MultipartFile file,
@@ -43,7 +38,7 @@ public class PdfExportImpl implements PdfExport {
 
         final String htmlContent = toHtmlService.convertMarkdownContentToHtml(markMyReadsFile.content(), style);
 
-        final byte[] pdfBytes = transformHtmlIntoPdfBytes(htmlContent);
+        final byte[] pdfBytes = toPdfService.toPdfBytes(htmlContent);
 
         final HttpHeaders headers = createHeaders((long) pdfBytes.length);
 
@@ -64,13 +59,4 @@ public class PdfExportImpl implements PdfExport {
 
         return headers;
     }
-
-    private byte[] transformHtmlIntoPdfBytes(@NonNull final String html) {
-
-        final ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-        HtmlConverter.convertToPdf(html, byteOut);
-
-        return byteOut.toByteArray();
-    }
-
 }
