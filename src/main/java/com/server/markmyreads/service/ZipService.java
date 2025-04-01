@@ -1,5 +1,6 @@
 package com.server.markmyreads.service;
 
+import com.server.markmyreads.domain.enumeration.NoteStyleEnum;
 import com.server.markmyreads.domain.model.MarkMyReadsFile;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
@@ -10,6 +11,6 @@ public interface ZipService {
 
     byte[] zipMarkdowns(@NonNull @NotNull final List<MarkMyReadsFile> files);
 
-    byte[] zipPdfs(@NonNull @NotNull final List<MarkMyReadsFile> files);
+    byte[] zipPdfs(@NonNull @NotNull final List<MarkMyReadsFile> files, @NonNull @NotNull final NoteStyleEnum pdfStyle);
 
 }

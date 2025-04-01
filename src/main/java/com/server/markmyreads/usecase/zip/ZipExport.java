@@ -1,6 +1,7 @@
 package com.server.markmyreads.usecase.zip;
 
 import com.server.markmyreads.domain.enumeration.NoteSortType;
+import com.server.markmyreads.domain.enumeration.NoteStyleEnum;
 import io.micrometer.common.lang.NonNull;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
@@ -10,4 +11,7 @@ public interface ZipExport {
 
     ResponseEntity<byte[]> convertToManyMarkdowns(@NonNull @NotNull final MultipartFile file, @NonNull @NotNull final NoteSortType sort);
 
+    ResponseEntity<byte[]> convertToManyPdfs(@NonNull @NotNull final MultipartFile file,
+                                             @NonNull @NotNull final NoteSortType sort,
+                                             @NonNull @NotNull final NoteStyleEnum style);
 }

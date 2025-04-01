@@ -2,14 +2,17 @@ package com.server.markmyreads.usecase.zip.impl;
 
 import com.server.markmyreads.domain.dto.ClippingsContext;
 import com.server.markmyreads.domain.enumeration.NoteSortType;
+import com.server.markmyreads.domain.enumeration.NoteStyleEnum;
 import com.server.markmyreads.domain.model.KindleNote;
 import com.server.markmyreads.domain.model.MarkMyReadsFile;
 import com.server.markmyreads.handler.exception.ZipProcessingErrorException;
 import com.server.markmyreads.service.ClippingsExtractorService;
 import com.server.markmyreads.service.KindleNoteProviderService;
 import com.server.markmyreads.service.MarkdownFormatterService;
+import com.server.markmyreads.service.ZipService;
 import com.server.markmyreads.usecase.zip.ZipExport;
 import com.server.markmyreads.util.StringSanitizerUtil;
+import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ContentDisposition;
@@ -35,6 +38,7 @@ public class ZipExportImpl implements ZipExport {
     private final ClippingsExtractorService extractorService;
     private final KindleNoteProviderService providerService;
     private final MarkdownFormatterService formatterService;
+    private final ZipService zipService;
 
     @Override
     public ResponseEntity<byte[]> convertToManyMarkdowns(@NonNull final MultipartFile file,
@@ -44,44 +48,38 @@ public class ZipExportImpl implements ZipExport {
         final List<KindleNote> notes = providerService.processAllNotesBySort(context, sort);
         final List<MarkMyReadsFile> markMyReadsFiles = formatterService.formatToManyMarkdowns(notes);
 
-        byte[] zipContent = zipFiles(markMyReadsFiles);
+        final byte[] zipContent = zipService.zipMarkdowns(markMyReadsFiles);
 
+        return ResponseEntity
+                .ok()
+                .headers(createHeaders(zipContent.length))
+                .body(zipContent);
+    }
+
+    @Override
+    public ResponseEntity<byte[]> convertToManyPdfs(@NonNull final MultipartFile file, @NonNull final NoteSortType sort, @NonNull final NoteStyleEnum style) {
+
+        final ClippingsContext context = extractorService.extractClippingsBlocks(file);
+        final List<KindleNote> notes = providerService.processAllNotesBySort(context, sort);
+        final List<MarkMyReadsFile> files = formatterService.formatToManyMarkdowns(notes);
+
+        final byte[] zippedPdfs = zipService.zipPdfs(files, style);
+
+        return ResponseEntity
+                .ok()
+                .headers(createHeaders(zippedPdfs.length))
+                .body(zippedPdfs);
+    }
+
+    private HttpHeaders createHeaders(final long length){
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.setContentDisposition(ContentDisposition.attachment()
                 .filename("markmyreads.zip")
                 .build());
-        headers.setContentLength(zipContent.length);
+        headers.setContentLength(length);
 
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .body(zipContent);
-    }
-
-    private byte[] zipFiles(@NonNull final List<MarkMyReadsFile> files) {
-        try(final ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-            final ZipOutputStream zipOut = new ZipOutputStream(byteOut)) {
-
-            final String folderName = "markmyreads/";
-
-            for (final MarkMyReadsFile file : files) {
-
-                final String fileName = StringSanitizerUtil.sanitizeFileName(file.filename()) + ".md";
-                final ZipEntry entry = new ZipEntry(folderName + fileName);
-                zipOut.putNextEntry(entry);
-
-                final byte[] content = file.content().getBytes(StandardCharsets.UTF_8);
-                zipOut.write(content);
-                zipOut.closeEntry();
-            }
-
-            zipOut.close();
-            return byteOut.toByteArray();
-        }
-        catch (IOException e) {
-            throw new ZipProcessingErrorException();
-        }
+        return headers;
     }
 
 }

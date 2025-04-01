@@ -40,7 +40,9 @@ public class ClippingsController {
 
             case PDF -> pdfExport.convertToSinglePdf(file, sort, style);
 
-            case ZIP -> zipExport.convertToManyMarkdowns(file, sort);
+            case ZIP_MARKDOWNS -> zipExport.convertToManyMarkdowns(file, sort);
+
+            case ZIP_PDFS -> zipExport.convertToManyPdfs(file, sort, style);
         };
     }
 

@@ -9,7 +9,8 @@ public enum ExportOptionEnum {
 
     MARKDOWN("MARKDOWN"),
     PDF("PDF"),
-    ZIP("ZIP"),;
+    ZIP_MARKDOWNS("ZIP_MARKDOWNS"),
+    ZIP_PDFS("ZIP_PDFS");
 
     private final String option;
 }
