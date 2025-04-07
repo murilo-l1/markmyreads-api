@@ -37,6 +37,49 @@ public enum NoteStyleEnum {
         </style>
     """),
 
+    SCRATCH("""
+        <style>
+            body { 
+                font-family: 'Caveat', cursive; 
+                font-size: 20px; 
+                line-height: 1.6; 
+                background-color: #FFF8E7; 
+                color: #2B2B2B; 
+                padding: 30px; 
+                max-width: 800px; 
+                margin: auto;
+                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.05"><path d="M10 10 L90 90 M90 10 L10 90" stroke="#ccc" stroke-width="1"/></svg>'); 
+                background-repeat: repeat;
+            }
+            h1, h2, h3 { 
+                font-family: 'Permanent Marker', cursive; /
+                color: #D9534F; /* Vermelho rabiscado */
+                font-weight: normal; 
+                text-align: center; 
+                letter-spacing: 1px;
+                text-decoration: underline wavy #D9534F; 
+                margin-bottom: 20px;
+            }
+            p { 
+                text-align: justify; 
+                margin-bottom: 25px; 
+                border: 1px solid #999; /
+                border-radius: 5px; 
+                padding: 10px; 
+                box-shadow: 2px 2px 5px rgba(0,0,0,0.1); 
+                background: rgba(255, 255, 255, 0.8); 
+            }
+            blockquote { 
+                font-style: italic; 
+                border-left: 3px dashed #5BC0DE; 
+                padding-left: 15px; 
+                color: #444; 
+                background: rgba(240, 248, 255, 0.5); 
+                margin: 20px 0;
+            }
+        </style>
+    """),
+
     DARK_MODE("""
         <style>
             body {
