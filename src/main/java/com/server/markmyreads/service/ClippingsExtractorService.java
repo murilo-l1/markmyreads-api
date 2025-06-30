@@ -1,5 +1,6 @@
 package com.server.markmyreads.service;
 
+import com.server.markmyreads.domain.dto.BookcoverDto;
 import com.server.markmyreads.domain.dto.ClippingsContext;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
@@ -11,4 +12,5 @@ public interface ClippingsExtractorService {
 
     ClippingsContext extractClippingsBlocks(@NonNull @NotNull final MultipartFile file);
 
+    List<BookcoverDto> extractAuthorAndTitle(@NonNull @NotNull final MultipartFile file);
 }

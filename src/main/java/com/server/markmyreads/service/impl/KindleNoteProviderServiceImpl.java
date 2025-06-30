@@ -8,10 +8,10 @@ import com.server.markmyreads.domain.model.KindleNote;
 import com.server.markmyreads.service.KindleNoteProviderService;
 import com.server.markmyreads.util.DateParserUtil;
 import io.micrometer.common.lang.NonNull;
+import jakarta.validation.constraints.NotNull;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,6 +60,11 @@ public class KindleNoteProviderServiceImpl implements KindleNoteProviderService 
         final List<KindleNote> notes = cleanUpNotes(noteMap.values());
 
         return applySort(notes, type);
+    }
+
+    @Override
+    public List<String> provideMetadata(@NotNull final ClippingsContext context) {
+        return List.of();
     }
 
     private List<KindleNote> applySort(final List<KindleNote> notes, final NoteSortType type) {
@@ -115,4 +120,17 @@ public class KindleNoteProviderServiceImpl implements KindleNoteProviderService 
                 : AUTHOR_NOT_PROVIDED;
     }
 
+
+
+    /*
+    public List<NoteMetadata> fetchMetadata(@NonNull final ClippingsContext context) {
+
+        final List<String> blocks = context.blocks();
+
+        return blocks.stream().map(block -> {
+            String author = extractAuthorFromHeader(block)
+        });
+
+     }
+     */
 }

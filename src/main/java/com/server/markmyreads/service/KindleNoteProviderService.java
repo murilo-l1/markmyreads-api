@@ -12,4 +12,6 @@ public interface KindleNoteProviderService {
 
     List<KindleNote> processAllNotesBySort(@NonNull @NotNull final ClippingsContext context, @NonNull @NotNull final NoteSortType type);
 
+    List<String> provideMetadata(@NonNull @NotNull final ClippingsContext context);
+
 }

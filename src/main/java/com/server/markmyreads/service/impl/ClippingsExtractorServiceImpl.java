@@ -1,9 +1,11 @@
 package com.server.markmyreads.service.impl;
 
 import com.server.markmyreads.domain.constant.ClippingsConstants;
+import com.server.markmyreads.domain.dto.BookcoverDto;
 import com.server.markmyreads.domain.dto.ClippingsContext;
 import com.server.markmyreads.handler.exception.ClippingsExtractionErrorException;
 import com.server.markmyreads.service.ClippingsExtractorService;
+import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -56,6 +59,10 @@ public class ClippingsExtractorServiceImpl implements ClippingsExtractorService 
 
     }
 
+    @Override
+    public List<BookcoverDto> extractAuthorAndTitle(@NotNull final @NonNull MultipartFile file) {
+        return List.of();
+    }
 
 
 }

@@ -6,6 +6,10 @@ server:
     include-stacktrace: never
     include-message: always
 
+google:
+  api:
+    key: 'AIzaSyAz4VXWDKrkHAb-c2EmFsE2k_sN2wtq0iI'
+
 spring:
   servlet:
     multipart:
