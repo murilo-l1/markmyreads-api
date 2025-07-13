@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 
 import static com.server.markmyreads.domain.constant.ClippingsConstants.AUTHOR_NOT_PROVIDED;
 
-
 @Service("KindleNoteProviderService")
 public class KindleNoteProviderServiceImpl implements KindleNoteProviderService {
 
@@ -39,7 +38,9 @@ public class KindleNoteProviderServiceImpl implements KindleNoteProviderService 
 
             final String header = blockLines[ClippingsConstants.HEADER_INDEX];
             final String title = extractTitleFromHeader(header);
+
             final String author = extractAuthorFromHeader(header);
+
             final String note = blockLines[ClippingsConstants.NOTE_CONTENT_INDEX];
             final NoteDateContext date = DateParserUtil.parseToLocalDate(blockLines[ClippingsConstants.LAST_DATE_READ_INDEX]);
 
@@ -53,18 +54,12 @@ public class KindleNoteProviderServiceImpl implements KindleNoteProviderService 
                     existingNote.updateLastReadAt(date);
                     return existingNote;
                 }
-
             });
         }
 
         final List<KindleNote> notes = cleanUpNotes(noteMap.values());
 
         return applySort(notes, type);
-    }
-
-    @Override
-    public List<String> provideMetadata(@NotNull final ClippingsContext context) {
-        return List.of();
     }
 
     private List<KindleNote> applySort(final List<KindleNote> notes, final NoteSortType type) {
@@ -84,7 +79,6 @@ public class KindleNoteProviderServiceImpl implements KindleNoteProviderService 
     }
 
     private List<KindleNote> cleanUpNotes(final Collection<KindleNote> notes) {
-
         notes.forEach(KindleNote::removeDuplicateNotes);
         return new ArrayList<>(notes);
     }
@@ -120,17 +114,4 @@ public class KindleNoteProviderServiceImpl implements KindleNoteProviderService 
                 : AUTHOR_NOT_PROVIDED;
     }
 
-
-
-    /*
-    public List<NoteMetadata> fetchMetadata(@NonNull final ClippingsContext context) {
-
-        final List<String> blocks = context.blocks();
-
-        return blocks.stream().map(block -> {
-            String author = extractAuthorFromHeader(block)
-        });
-
-     }
-     */
 }

@@ -11,6 +11,4 @@ import java.util.List;
 public interface ClippingsExtractorService {
 
     ClippingsContext extractClippingsBlocks(@NonNull @NotNull final MultipartFile file);
-
-    List<BookcoverDto> extractAuthorAndTitle(@NonNull @NotNull final MultipartFile file);
 }

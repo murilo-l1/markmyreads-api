@@ -1,19 +1,10 @@
 
-CREATE TABLE mmr_processing_history(
-    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    file_name TEXT,
-    books_count INTEGER,
-    notes_count INTEGER,
-    processed_at TIMESTAMP
-);
-
-INSERT INTO mmr_processing_history(file_name, books_count, notes_count, processed_at) VALUES
-    ('my_notes', 10, 150, NOW());
-
+CREATE TYPE clippings_locale AS ENUM ('PT_BR', 'EN_US');
 CREATE TABLE clippings(
     id BIGSERIAL PRIMARY KEY,
+    locale clippings_locale NOT NULL,
     uploaded_at TIMESTAMP NOT NULL,
-    owner TEXT NULL
+    size BIGINT NOT NULL
 );
 
 CREATE TABLE book(
@@ -21,10 +12,7 @@ CREATE TABLE book(
    clippings_id BIGINT NOT NULL REFERENCES clippings (id),
    title TEXT NOT NULL,
    author TEXT NOT NULL,
-   last_read_at TIMESTAMP NOT NULL,
-
-   created_at TIMESTAMP NOT NULL,
-   updated_at TIMESTAMP NOT NULL
+   last_read_at DATE NOT NULL
 );
 
 CREATE TABLE note(

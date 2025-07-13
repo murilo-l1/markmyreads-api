@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ExportOptionEnum {
+public enum ExportOption {
 
     MARKDOWN("MARKDOWN"),
     PDF("PDF"),

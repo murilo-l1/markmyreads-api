@@ -1,6 +1,6 @@
 package com.server.markmyreads.service.impl;
 
-import com.server.markmyreads.domain.enumeration.NoteStyleEnum;
+import com.server.markmyreads.domain.enumeration.NoteStyle;
 import com.server.markmyreads.domain.model.MarkMyReadsFile;
 import com.server.markmyreads.handler.exception.ZipProcessingErrorException;
 import com.server.markmyreads.service.HtmlToPdfService;
@@ -54,7 +54,7 @@ public class ZipServiceImpl implements ZipService {
     }
 
     @Override
-    public byte[] zipPdfs(@NonNull final List<MarkMyReadsFile> files, @NonNull final NoteStyleEnum pdfStyle) {
+    public byte[] zipPdfs(@NonNull final List<MarkMyReadsFile> files, @NonNull final NoteStyle pdfStyle) {
         try(final ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
             final ZipOutputStream zipOut = new ZipOutputStream(byteOut)) {
 

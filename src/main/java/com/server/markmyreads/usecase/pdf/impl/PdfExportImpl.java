@@ -2,7 +2,7 @@ package com.server.markmyreads.usecase.pdf.impl;
 
 import com.server.markmyreads.domain.dto.ClippingsContext;
 import com.server.markmyreads.domain.enumeration.NoteSortType;
-import com.server.markmyreads.domain.enumeration.NoteStyleEnum;
+import com.server.markmyreads.domain.enumeration.NoteStyle;
 import com.server.markmyreads.domain.model.KindleNote;
 import com.server.markmyreads.domain.model.MarkMyReadsFile;
 import com.server.markmyreads.service.*;
@@ -31,7 +31,7 @@ public class PdfExportImpl implements PdfExport {
     @Override
     public ResponseEntity<byte[]> convertToSinglePdf(@NonNull final MultipartFile file,
                                                      @NonNull final NoteSortType sort,
-                                                     @NonNull final NoteStyleEnum style) {
+                                                     @NonNull final NoteStyle style) {
         final ClippingsContext context = extractor.extractClippingsBlocks(file);
         final List<KindleNote> notes = provider.processAllNotesBySort(context, sort);
         final MarkMyReadsFile markMyReadsFile = formatterService.formatToSingleMarkdown(notes);

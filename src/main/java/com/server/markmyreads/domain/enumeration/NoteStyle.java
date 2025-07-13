@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum NoteStyleEnum {
+public enum NoteStyle {
 
     CLASSIC("""
         <style>

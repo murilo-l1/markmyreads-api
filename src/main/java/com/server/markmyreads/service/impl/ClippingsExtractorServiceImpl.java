@@ -1,11 +1,10 @@
 package com.server.markmyreads.service.impl;
 
 import com.server.markmyreads.domain.constant.ClippingsConstants;
-import com.server.markmyreads.domain.dto.BookcoverDto;
 import com.server.markmyreads.domain.dto.ClippingsContext;
+import com.server.markmyreads.domain.enumeration.ClippingsLocale;
 import com.server.markmyreads.handler.exception.ClippingsExtractionErrorException;
 import com.server.markmyreads.service.ClippingsExtractorService;
-import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,15 +12,19 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service("ExtractorService")
 public class ClippingsExtractorServiceImpl implements ClippingsExtractorService {
 
+    private static final Pattern PT_BR_FLAG = Pattern.compile("Adicionado|posição|segunda|terça");
+    private static final Pattern EN_US_FLAG = Pattern.compile("Added|on|position|monday|tuesday"); // for now, if it's not PT-BR it will be EN-US no matter lang.
+
     @Override
     public ClippingsContext extractClippingsBlocks(@NonNull final MultipartFile file) {
+        ClippingsLocale detectedLocale = null;
 
         try (final BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
 
@@ -37,6 +40,9 @@ public class ClippingsExtractorServiceImpl implements ClippingsExtractorService 
                     }
                 }
                 else {
+                    if (detectedLocale == null) {
+                        detectedLocale = findLocale(line);
+                    }
                     currentBlock.append(line).append("\n");
                 }
             }
@@ -51,7 +57,7 @@ public class ClippingsExtractorServiceImpl implements ClippingsExtractorService 
 
             br.close();
 
-            return new ClippingsContext(blocksSet.stream().toList());
+            return new ClippingsContext(blocksSet.stream().toList(), detectedLocale);
         }
         catch (Exception e) {
             throw new ClippingsExtractionErrorException();
@@ -59,10 +65,18 @@ public class ClippingsExtractorServiceImpl implements ClippingsExtractorService 
 
     }
 
-    @Override
-    public List<BookcoverDto> extractAuthorAndTitle(@NotNull final @NonNull MultipartFile file) {
-        return List.of();
-    }
+    private ClippingsLocale findLocale(final String testLine) {
+        final Matcher ptBrMatcher = PT_BR_FLAG.matcher(testLine);
+        if (ptBrMatcher.find()) {
+            return ClippingsLocale.PT_BR;
+        }
 
+        final Matcher enUsMatcher = EN_US_FLAG.matcher(testLine);
+        if (enUsMatcher.find()) {
+            return ClippingsLocale.EN_US;
+        }
+
+        return null;
+    }
 
 }

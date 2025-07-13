@@ -1,10 +1,9 @@
 package com.server.markmyreads.controller.privat;
 
 import com.server.markmyreads.domain.dto.BookcoverDto;
-import com.server.markmyreads.domain.dto.GoogleResponse;
-import com.server.markmyreads.domain.enumeration.ExportOptionEnum;
+import com.server.markmyreads.domain.enumeration.ExportOption;
 import com.server.markmyreads.domain.enumeration.NoteSortType;
-import com.server.markmyreads.domain.enumeration.NoteStyleEnum;
+import com.server.markmyreads.domain.enumeration.NoteStyle;
 import com.server.markmyreads.service.BookcoverService;
 import com.server.markmyreads.usecase.metadata.MetadataFetch;
 import com.server.markmyreads.usecase.pdf.PdfExport;
@@ -39,9 +38,9 @@ public class ClippingsController {
 
     @PostMapping(value = "/export", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<byte[]> export(@NonNull @NotNull @RequestParam("file") final MultipartFile file,
-                                         @NonNull @NotNull @RequestParam("export") final ExportOptionEnum export,
+                                         @NonNull @NotNull @RequestParam("export") final ExportOption export,
                                          @NonNull @NotNull @RequestParam(name = "sort", required = false, defaultValue = "DATE_DESC") final NoteSortType sort,
-                                         @NonNull @NotNull @RequestParam(name = "style", required = false, defaultValue = "CLASSIC") final NoteStyleEnum style) {
+                                         @NonNull @NotNull @RequestParam(name = "style", required = false, defaultValue = "CLASSIC") final NoteStyle style) {
 
         validator.validate(file);
 
