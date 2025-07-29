@@ -1,5 +1,6 @@
 package com.server.markmyreads.usecase.upload;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.server.markmyreads.domain.dto.SessionDto;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;

@@ -30,6 +30,7 @@ public class ClippingsExtractorServiceImpl implements ClippingsExtractorService 
 
             final Set<String> blocksSet = new LinkedHashSet<>();
             StringBuilder currentBlock = new StringBuilder();
+
             String line;
 
             while ((line = br.readLine()) != null) {
