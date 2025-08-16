@@ -75,9 +75,7 @@ public class ClippingsProcessingServiceImpl implements ClippingsProcessingServic
             }
         }
 
-        if (noteToEvaluate != null) {
-            noteRepository.save(noteToEvaluate);
-        }
+        noteRepository.save(noteToEvaluate);
 
         return clippings.getId();
     }
