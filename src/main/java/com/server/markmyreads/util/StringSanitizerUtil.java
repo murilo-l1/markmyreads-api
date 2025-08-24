@@ -14,7 +14,7 @@ public class StringSanitizerUtil {
     public static String sanitizeFileName(final String original) {
 
         if (StringUtils.isBlank(original)) {
-            return "unnamed";
+            return "Untitled";
         }
 
         String cleanedup = cleanupIsbnTitle(original);
@@ -25,13 +25,13 @@ public class StringSanitizerUtil {
 
         return !cleanedup.trim().isEmpty()
                 ? cleanedup
-                : "unnamed";
+                : "Untitled";
     }
 
     public static String sanitizeTitle(final String original) {
 
         if (StringUtils.isBlank(original)) {
-            return "unnamed";
+            return "Untitled";
         }
 
         String cleanedup = cleanupIsbnTitle(original);
@@ -39,7 +39,7 @@ public class StringSanitizerUtil {
 
         return !cleanedup.trim().isEmpty()
                 ? cleanedup
-                : "unnamed";
+                : "Untitled";
     }
 
     private static String cleanupIsbnTitle(String title) {

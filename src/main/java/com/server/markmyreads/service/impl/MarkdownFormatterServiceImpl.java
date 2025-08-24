@@ -3,10 +3,12 @@ package com.server.markmyreads.service.impl;
 import com.server.markmyreads.domain.constant.MarkdownResultConstants;
 import com.server.markmyreads.domain.model.KindleNote;
 import com.server.markmyreads.domain.model.MarkMyReadsFile;
+import com.server.markmyreads.repository.NoteRepository;
 import com.server.markmyreads.service.MarkdownFormatterService;
 import com.server.markmyreads.util.DateParserUtil;
 import com.server.markmyreads.util.StringSanitizerUtil;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,10 +18,14 @@ import java.util.Locale;
 import static com.server.markmyreads.domain.constant.MarkdownResultConstants.DOUBLE_LINE_BREAK;
 
 @Service("MarkdownFormatterService")
+@RequiredArgsConstructor
 public class MarkdownFormatterServiceImpl implements MarkdownFormatterService {
+
+    private final NoteRepository noteRepository;
 
     @Override
     public MarkMyReadsFile formatToSingleMarkdown(@NonNull final List<KindleNote> notes) {
+
         final StringBuilder markdownContent = new StringBuilder();
 
         for (final KindleNote note : notes) {

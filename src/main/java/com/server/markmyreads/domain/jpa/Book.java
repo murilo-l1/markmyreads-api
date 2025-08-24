@@ -1,9 +1,7 @@
 package com.server.markmyreads.domain.jpa;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +18,7 @@ public class Book {
 
     protected static final String TABLE_NAME = "book";
 
-    public Book(final Clippings clippings, final String title, final String author) {
-        this.clippings = clippings;
+    public Book(final String title, final String author) {
         this.title = title;
         this.author = author;
     }
@@ -29,14 +26,6 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "clippings_id", updatable = false, insertable = false)
-    private Long clippingsId;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "clippings_id", nullable = false)
-    private Clippings clippings;
 
     @NotBlank
     @Size(min = 1, max = 400)

@@ -2,6 +2,7 @@ package com.server.markmyreads.domain.component;
 
 import com.server.markmyreads.domain.dto.ParsedClippingDto;
 import com.server.markmyreads.util.DateParserUtil;
+import com.server.markmyreads.util.StringSanitizerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -52,9 +53,11 @@ public class ClippingBlockParser {
         }
 
         int lastOpenParenIndex = line.lastIndexOf("(");
-        return lastOpenParenIndex == -1
-                ? line.trim()
-                : line.substring(0, lastOpenParenIndex).trim();
+        if (lastOpenParenIndex == -1) {
+            return line.trim();
+        }
+
+        return StringSanitizerUtil.sanitizeTitle(line.substring(0, lastOpenParenIndex)).trim();
     }
     
     private String extractAuthorFromLine(final String line) {

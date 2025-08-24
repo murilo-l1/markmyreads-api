@@ -1,0 +1,12 @@
+POST http://localhost:8080/api/clippings/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="My Clippings.txt"
+
+< D:\Dev\JavaProjects\marmkyreads\test_files\My Clippings.txt
+--WebAppBoundary--
+
+### GET bookcover
+@clippingsId = 5
+GET http://localhost:8080/api/clippings/17/bookcovers

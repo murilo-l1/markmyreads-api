@@ -57,6 +57,7 @@ public class ClippingsProcessingServiceImpl implements ClippingsProcessingServic
         for (final ParsedClippingDto note : notes) {
             final Book book = findOrCreateBook(clippings, processedBooksCache, note);
             updateLastReadAt(book, note.date());
+            clippings.getBooks().add(book);
 
             if (noteToEvaluate == null) {
                 noteToEvaluate = new Note(book, note.content());
@@ -84,7 +85,7 @@ public class ClippingsProcessingServiceImpl implements ClippingsProcessingServic
         return cache.computeIfAbsent(dto.title(), title ->
                 bookRepository.findByTitleAndAuthor(title, dto.author())
                         .orElseGet(() -> {
-                            Book newBook = new Book(clippings, title, dto.author());
+                            Book newBook = new Book(title, dto.author());
                             newBook.setLastReadAt(dto.date());
                             return bookRepository.save(newBook);
                         })

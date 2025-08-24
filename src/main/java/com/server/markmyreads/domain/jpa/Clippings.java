@@ -9,6 +9,8 @@ import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = Clippings.TABLE_NAME)
@@ -35,5 +37,13 @@ public class Clippings {
     @NotNull
     @Column(name = "size", nullable = false)
     private Long size;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "clippings_book",
+            joinColumns = @JoinColumn(name = "clippings_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    private Set<Book> books = new HashSet<>();
 
 }
